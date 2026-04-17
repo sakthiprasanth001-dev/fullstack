@@ -3,43 +3,34 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/sakthiprasanth001-dev/fullstack.git'
             }
         }
 
-        stage('Install Backend') {
+        stage('Build Backend Docker') {
             steps {
-                dir('backend') {
-                    sh 'npm install'
-                }
+                sh 'docker build -t backend-app ./backend'
             }
         }
 
-        stage('Install Frontend') {
+        stage('Run Backend') {
             steps {
-                dir('frontend') {
-                    sh 'npm install'
-                }
+                sh 'docker run -d -p 5000:5000 backend-app'
             }
         }
 
-        stage('Build Frontend') {
+        stage('Build Frontend Docker') {
             steps {
-                dir('frontend') {
-                    sh 'npm run build'
-                }
+                sh 'docker build -t frontend-app ./frontend'
             }
         }
 
-        stage('Test Backend Start') {
+        stage('Run Frontend') {
             steps {
-                dir('backend') {
-                    sh 'node index.js &'
-                }
+                sh 'docker run -d -p 80:80 frontend-app'
             }
         }
-
     }
 }
