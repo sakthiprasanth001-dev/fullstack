@@ -1,40 +1,35 @@
 pipeline {
     agent any
 
-    environment {
-        ECR_REPO = "your-ecr-repo"
-        IMAGE_TAG = "latest"
-    }
-
     stages {
 
-        stage('Clone Code') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/<your-username>/contactlist-backend.git'
+                git branch: 'main', url: 'https://github.com/sakthiprasanth001-dev/fullstack.git'
             }
         }
 
-        stage('Docker Build') {
+        stage('List Files') {
             steps {
-                sh "docker build -t $ECR_REPO:$IMAGE_TAG ."
+                sh 'ls -al'
             }
         }
 
-        stage('Login to ECR') {
+        stage('Frontend Check') {
             steps {
-                sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REPO"
+                sh 'ls frontend'
             }
         }
 
-        stage('Push to ECR') {
+        stage('Backend Check') {
             steps {
-                sh "docker push $ECR_REPO:$IMAGE_TAG"
+                sh 'ls backend'
             }
         }
 
-        stage('Deploy to EKS') {
+        stage('Docker Test') {
             steps {
-                sh "kubectl apply -f k8s/"
+                sh 'docker --version'
             }
         }
     }
