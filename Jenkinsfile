@@ -1,19 +1,9 @@
-pipeline {
-    agent any
+node {
+    stage('Test') {
+        echo 'HELLO JENKINS IS WORKING'
+    }
 
-    stages {
-
-        stage('Test 1') {
-            steps {
-                echo "Jenkins is running fine"
-            }
-        }
-
-        stage('List Files') {
-            steps {
-                sh "ls -al"
-            }
-        }
-
+    stage('List') {
+        sh 'ls -al'
     }
 }
