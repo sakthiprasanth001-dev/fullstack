@@ -9,7 +9,7 @@ pipeline {
             }
         }
 
-        stage('Build Backend Docker') {
+        stage('Build Backend Image') {
             steps {
                 sh 'docker build -t backend-app ./backend'
             }
@@ -21,7 +21,7 @@ pipeline {
             }
         }
 
-        stage('Build Frontend Docker') {
+        stage('Build Frontend Image') {
             steps {
                 sh 'docker build -t frontend-app ./frontend'
             }
@@ -32,5 +32,6 @@ pipeline {
                 sh 'docker run -d -p 80:80 frontend-app'
             }
         }
+
     }
 }
